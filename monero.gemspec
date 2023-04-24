@@ -24,5 +24,6 @@ Gem::Specification.new do |spec|
 
   spec.required_rubygems_version = '>= 1.3.6'
 
+  spec.add_dependency "uri"
   spec.add_dependency "money"
 end
