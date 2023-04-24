@@ -7,8 +7,6 @@ module MoneroRPC
       :suggested_confirmations_threshold, :subaddr_indices
 
     def initialize(args={})
-      require 'pry'
-      binding.pry
       args.each do |k,v|
         self.send("#{k}=", v)
       end
