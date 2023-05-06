@@ -1,4 +1,5 @@
 class MoneroRPC::Client
+  include MoneroRPC::Daemon
   include MoneroRPC::Wallet
   include MoneroRPC::Transfer
 
@@ -22,10 +23,12 @@ class MoneroRPC::Client
   end
 
   def request(method, params="")
-    # TODO
-    # who can implement digest auth with net/http?
-    # this is really ugly!
-    data = '{"jsonrpc":"2.0","id":"0","method": "'+method+'", "params": '+params.to_json+' }'
+    data = {
+      jsonrpc: '2.0',
+      id:      '0',
+      method:  method,
+      params:  params
+    }.to_json
     args = ""
     args << " -s"
     args << " -u #{username}:#{password} --digest"

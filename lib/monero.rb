@@ -1,6 +1,7 @@
 require 'money'
 require 'uri'
 require 'monero_rpc/config'
+require 'monero_rpc/daemon'
 require 'monero_rpc/payment'
 require 'monero_rpc/wallet'
 require 'monero_rpc/version'

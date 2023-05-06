@@ -1,4 +1,11 @@
 module MoneroRPC::Wallet
+  def get_accounts
+    request("get_accounts")
+  end
+
+  def create_account(label = '')
+    request('create_account', label: label)
+  end
 
   def create_address(label="")
     request("create_address", label: label)
@@ -109,6 +116,21 @@ module MoneroRPC::Wallet
     return h
   end
 
+  def get_transfer_by_txid(txid)
+    h = Hash.new
+    json = request("get_transfer_by_txid", txid)
+    json.map{|k, v|
+      h[k] = v.collect{|transfer|
+        if k == "in"
+          in_transfer_clazz.constantize.new(transfer)
+        else
+          out_transfer_clazz.constantize.new(transfer)
+        end
+      }
+    }
+    return h
+  end
+
   def get_all_incoming_transfers(args={})
     pending = args.fetch(:pending, true)
     min_height = args.fetch(:min_height, 0)
@@ -141,6 +163,11 @@ module MoneroRPC::Wallet
   end
   alias_method :create, :create_wallet
 
+  def generate_view_wallet(filename, address, password, viewkey, restore_height=0)
+    options = { filename: filename, address: address, password: password, viewkey: viewkey, restore_height: restore_height }
+    !! request('generate_from_keys', options)
+  end
+
   # returns current balance if open successfull
   def open_wallet(filename, password="")
     options = { filename: filename, password: password}
@@ -151,6 +178,10 @@ module MoneroRPC::Wallet
     end
   end
   alias_method :open, :open_wallet
+
+  def close_wallet
+    request('close_wallet')
+  end
 
   # stops current MoneroRPC process!
   def stop_wallet
