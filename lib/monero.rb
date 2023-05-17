@@ -17,10 +17,10 @@ module MoneroRPC
   end
 
   def self.new(args={})
-    host     = args.fetch(:host,     MoneroRPC.config.host) || raise("missing host")
-    port     = args.fetch(:port,     MoneroRPC.config.port) || raise("missing port")
-    username = args.fetch(:username, MoneroRPC.config.username) || raise("missing username")
-    password = args.fetch(:password, MoneroRPC.config.password) || raise("missing password")
+    host     = args.fetch(:host,     MoneroRPC.config.host) || raise(ConnectionError, "missing host")
+    port     = args.fetch(:port,     MoneroRPC.config.port) || raise(ConnectionError, "missing port")
+    username = args.fetch(:username, MoneroRPC.config.username) || raise(ConnectionError, "missing username")
+    password = args.fetch(:password, MoneroRPC.config.password) || raise(ConnectionError, "missing password")
     debug    = args.fetch(:debug,    MoneroRPC.config.debug)
     in_transfer_clazz = args.fetch(:in_transfer_clazz, MoneroRPC.config.in_transfer_clazz)
     out_transfer_clazz = args.fetch(:out_transfer_clazz, MoneroRPC.config.out_transfer_clazz)
@@ -44,8 +44,13 @@ Money::Currency.register({
 
 unless Object.const_defined?('XMR')
   class XMR
-    def self.new(amount); Money.new(amount, :xmr); end
-    def to_s; Money.new(amount, :xmr).format.to_s; end
+    def initialize(amount)
+      @amount = Money.new(amount, :xmr)
+    end
+
+    def to_s
+      @amount.format.to_s
+    end
   end
 end
 

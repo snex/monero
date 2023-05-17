@@ -58,6 +58,10 @@ module MoneroRPC::Wallet
     request("make_integrated_address", {payment_id: payment_id})
   end
 
+  def make_uri(address, amount, payment_id = '', recipient_name = '', description = '')
+    request('make_uri', { address: address, amount: amount, payment_id: payment_id, recipient_name: recipient_name, tx_description: description })
+  end
+
   def split_integrated_address(address)
     request("split_integrated_address", {integrated_address: address})
   end
@@ -117,18 +121,14 @@ module MoneroRPC::Wallet
   end
 
   def get_transfer_by_txid(txid)
-    h = Hash.new
-    json = request("get_transfer_by_txid", txid)
-    json.map{|k, v|
-      h[k] = v.collect{|transfer|
-        if k == "in"
-          in_transfer_clazz.constantize.new(transfer)
-        else
-          out_transfer_clazz.constantize.new(transfer)
-        end
-      }
-    }
-    return h
+    json = request("get_transfer_by_txid", { txid: txid })['transfer']
+    if json['type'] == 'in'
+      in_transfer_clazz.constantize.new(json)
+    elsif json['type'] == 'out'
+      out_transfer_clazz.constantize.new(json)
+    else
+      raise "invalid tx type #{json['type']}"
+    end
   end
 
   def get_all_incoming_transfers(args={})
@@ -147,10 +147,6 @@ module MoneroRPC::Wallet
 
     all = get_transfers(filter_by_height: true, min_height: min_height, max_height: max_height, in: false, out: true, pending: pending, pool: true)
     [ all["out"], all["pending"], all["pool"]].flatten.compact
-  end
-
-  def get_transfer_by_txid(txid)
-    request("get_transfer_by_txid", {txid: txid })
   end
 
   # creates a wallet and uses it

@@ -13,7 +13,7 @@ module MoneroRPC
     end
 
     def confirmed?
-      confirmations >= 10
+      confirmations >= suggested_confirmations_threshold.clamp(1, 10)
     end
 
     def pending?
