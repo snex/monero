@@ -29,3 +29,4 @@ end
 
 class MoneroRPC::IncomingTransfer < MoneroRPC::TransferClass; end
 class MoneroRPC::OutgoingTransfer < MoneroRPC::TransferClass; end
+class MoneroRPC::PoolTransfer < MoneroRPC::TransferClass; end
