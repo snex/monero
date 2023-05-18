@@ -112,7 +112,7 @@ module MoneroRPC::Wallet
       h[k] = v.collect{|transfer|
         if k == "in"
           in_transfer_clazz.constantize.new(transfer)
-        else
+        elsif k == "out"
           out_transfer_clazz.constantize.new(transfer)
         end
       }
@@ -126,6 +126,8 @@ module MoneroRPC::Wallet
       in_transfer_clazz.constantize.new(json)
     elsif json['type'] == 'out'
       out_transfer_clazz.constantize.new(json)
+    elsif json['type'] == 'pool'
+      pool_transfer_clazz.constantize.new(json)
     else
       raise "invalid tx type #{json['type']}"
     end

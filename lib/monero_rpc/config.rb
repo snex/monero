@@ -7,6 +7,7 @@ module MoneroRPC
     def initialize
       self.in_transfer_clazz = "MoneroRPC::IncomingTransfer"
       self.out_transfer_clazz = "MoneroRPC::OutgoingTransfer"
+      self.pool_transfer_clazz = "MoneroRPC::PoolTransfer"
     end
 
   end

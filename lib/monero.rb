@@ -24,8 +24,9 @@ module MoneroRPC
     debug    = args.fetch(:debug,    MoneroRPC.config.debug)
     in_transfer_clazz = args.fetch(:in_transfer_clazz, MoneroRPC.config.in_transfer_clazz)
     out_transfer_clazz = args.fetch(:out_transfer_clazz, MoneroRPC.config.out_transfer_clazz)
+    pool_transfer_clazz = args.fetch(:pool_transfer_clazz, MoneroRPC.config.pool_transfer_clazz)
 
-    Client.new(host: host, port: port, username: username, password: password, debug: debug, in_transfer_clazz: in_transfer_clazz, out_transfer_clazz: out_transfer_clazz)
+    Client.new(host: host, port: port, username: username, password: password, debug: debug, in_transfer_clazz: in_transfer_clazz, out_transfer_clazz: out_transfer_clazz, pool_transfer_clazz: pool_transfer_clazz)
   end
 
 end

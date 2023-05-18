@@ -16,6 +16,7 @@ class MoneroRPC::Client
     @debug    = args.fetch(:debug,    MoneroRPC.config.debug)
     @in_transfer_clazz = args.fetch(:in_transfer_clazz, MoneroRPC.config.in_transfer_clazz || "MoneroRPC::IncomingTransfer")
     @out_transfer_clazz = args.fetch(:out_transfer_clazz, MoneroRPC.config.out_transfer_clazz || "MoneroRPC::OutgoingTransfer")
+    @pool_transfer_clazz = args.fetch(:pool_transfer_clazz, MoneroRPC.config.pool_transfer_clazz || "MoneroRPC::PoolTransfer")
   end
 
   def close!
