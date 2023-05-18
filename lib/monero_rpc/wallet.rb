@@ -177,6 +177,10 @@ module MoneroRPC::Wallet
   end
   alias_method :open, :open_wallet
 
+  def save_wallet
+    request('store')
+  end
+
   def close_wallet
     request('close_wallet')
   end
