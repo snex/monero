@@ -6,7 +6,7 @@ class MoneroRPC::Client
 
 
 
-  attr_reader :host, :port, :username, :password, :debug, :in_transfer_clazz, :out_transfer_clazz
+  attr_reader :host, :port, :username, :password, :debug, :in_transfer_clazz, :out_transfer_clazz, :pool_transfer_clazz
 
   def initialize(args= {})
     @host     = args.fetch(:host,     MoneroRPC.config.host)
